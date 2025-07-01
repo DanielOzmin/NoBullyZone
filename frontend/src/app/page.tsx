@@ -1,9 +1,7 @@
 'use client'
 
-import { useState } from "react"
 
-
-export default function Home() {
+export default function LandingPage() {
   return (
     <main className="relative min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/assets/NoBullyZone.png')" }}>
 

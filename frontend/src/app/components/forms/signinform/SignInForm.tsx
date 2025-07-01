@@ -1,5 +1,6 @@
 'use client'
-import { useRouter } from "next/navigation"
+
+import { useAuth } from "@/hooks/useAuth"
 import { useState } from "react"
 
 const tailwindLabel = "absolute left-3 top-1/2 -translate-y-1/2 bg-white px-1 text-gray-600 text-sm transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:text-sm peer-focus:text-blue-600 peer-focus:-translate-y-1/2"
@@ -7,7 +8,9 @@ const tailwindInput = "peer w-full border border-gray-300 rounded-lg px-3 pt-4 p
 const SignInFrom = () => {
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    const router = useRouter()
+    const { login } = useAuth()
+    
+    
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +26,8 @@ const SignInFrom = () => {
             if (!response.ok) {
                 throw new Error("Something go wrong while fetch data")
             }
-            router.push("/")
+            login()
+            
 
         } catch (error) {
             console.error("Error: ", error)

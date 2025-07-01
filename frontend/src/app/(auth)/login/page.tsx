@@ -1,4 +1,4 @@
-import SignInFrom from "@/app/components/SignInForm"
+import SignInFrom from "../../components/forms/signinform/SignInForm";
 
 const LoginPage = () => {
     return <SignInFrom/>
