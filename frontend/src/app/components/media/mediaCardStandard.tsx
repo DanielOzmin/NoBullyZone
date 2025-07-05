@@ -1,14 +1,16 @@
 import { Album } from "@/types/models"
 import { PlusCircle } from "lucide-react"
 import Image from "next/image"
+
 import { useRef } from "react"
 
 type MediaStandardProps={
     album: Album
     type: "Image" | "Video"
+    setSelectedAlbumTitle: React.Dispatch<React.SetStateAction<string>>
 }
 
-const MediaCardStandard = ({album, type}: MediaStandardProps) => {
+const MediaCardStandard = ({album, type, setSelectedAlbumTitle}: MediaStandardProps) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -47,7 +49,7 @@ const MediaCardStandard = ({album, type}: MediaStandardProps) => {
     const handleAddButtonClick = () => {fileInputRef.current?.click()}
 
     return (
-        <div className="relative bg-white shadow rounded-xl p-3 w-48 hover:shadow-lg transition cursor-pointer">
+        <div className="relative bg-white shadow rounded-xl p-3 w-50 hover:shadow-lg transition cursor-pointer">
             <div className="relative aspect-video rounded-lg overflow-hidden">
                 <div className="relative w-40 h-40 rounded-xl overflow-hidden shadow">
                     <Image
@@ -71,7 +73,7 @@ const MediaCardStandard = ({album, type}: MediaStandardProps) => {
             </div>
 
             <div className="mt-2 text-center">
-                <p className="text-base font-semibold truncate">{album.title}</p>
+                <p className="text-base font-semibold truncate hover:underline hover:text-blue-400" onClick={()=>setSelectedAlbumTitle(album.title)}>{album.title}</p>
                 <p className="text-sm text-gray-500">{album.mediaItems.length} {type}</p>
             </div>
         </div>
