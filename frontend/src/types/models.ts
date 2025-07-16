@@ -1,19 +1,19 @@
 export type User = {
     id: string;
     name: string;
-    passwordHash: string;
     email: string;
     selfDescription: string
     birthday: string;
     role: string;
     profilePictureUrl?: string
+}
 
-    albums: Album[];
-
-    posts: Post[];
-    ads: Ad[];
-    sentRequests: Friendship[];
-    receivedRequests: Friendship[];
+export type UserStats = {
+    totalPosts: number;
+    totalAds: number;
+    totalComments: number;
+    totalFriends: number;
+    totalMessages: number;    
 }
 
 export type UserImage = {
@@ -26,6 +26,13 @@ export type UserVideo = {
     id: string;
     url: string;
     userId: string;
+}
+
+export type UserFriend = {
+    id: string;
+    name: string;
+    profilePictureUrl?: string;
+    selfDescription: string;
 }
 
 export type Post = {
@@ -57,6 +64,13 @@ export type Friendship = {
     addressee: User;
     status: string;
     createdAt: string;
+}
+
+export type PendingFriendshipDto = {
+    friendshipId: string;
+    status: string;
+    createdAt: string; 
+    otherUser: UserFriend;
 }
 
 export type Ad = {

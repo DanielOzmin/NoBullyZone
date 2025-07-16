@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { User } from "@/types/models"
 import { ProfileEditProps } from "@/types/types"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+
 
 
 const ProfileDetails = ({ setEditing, signedUrl }: ProfileEditProps) => {

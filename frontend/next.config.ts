@@ -2,7 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['nobullyzone.s3.eu-north-1.amazonaws.com'],
+    domains: [
+      'nobullyzone.s3.amazonaws.com',
+      'nobullyzone.s3.eu-north-1.amazonaws.com' 
+    ],
   },
   async rewrites() {
     return [

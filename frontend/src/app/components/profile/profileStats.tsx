@@ -1,23 +1,61 @@
 'use client'
 
 import { useAuth } from "@/hooks/useAuth"
+import { UserStats } from "@/types/models"
 import { UserPlus, Megaphone, MessageCircle, FileText, MessageSquare } from "lucide-react"
+import { useEffect, useState } from "react"
 
 
 
 const ProfileStats = () => {
     const { user } = useAuth()
+    const [userStats, setUserStats] = useState<UserStats>()
 
     if (!user) {
-        return
+        return (
+            <div>First u have to login</div>
+        )
     }
 
-    const connections = user.sentRequests.filter(r => r.status === "Accepted").length +
-        user.receivedRequests.filter(r => r.status === "Accepted").length
-    const ads = user.ads.length
-    const comments = user.posts.reduce((acc, post) => acc + post.comments.length, 0)
-    const posts = user.posts.length
-    const messages = "" // még ki kell találni, hogy csak egy apihívás lesz vagy másképp microserviceből.
+
+    const getStats = async () => {
+        try {
+            const res = await fetch("/api/User/me/stats",{
+                credentials: "include"
+            })
+            if(!res.ok){
+                throw new Error("Something go wrong while fetch stats")
+            }
+            const data = await res.json()
+            console.log(data)
+            setUserStats({totalPosts: data.totalPosts, 
+                totalAds: data.totalAds, 
+                totalComments: data.totalComments,
+                totalFriends: data.totalFriends,
+                totalMessages: data.totalMessages,})
+        } catch (error) {
+            console.error("Some unexpected error")
+        }
+    }
+
+    useEffect(()=>{
+        getStats()
+    },[])
+
+    if (!userStats) {
+        return (
+            <div className="flex justify-center items-center h-40">
+                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                <p className="text-blue-600 text-sm">Loading...</p>
+            </div>
+        )
+    }
+
+    const connections = userStats?.totalFriends ?? 0
+    const ads = userStats?.totalAds ?? 0
+    const comments = userStats?.totalComments ?? 0
+    const posts = userStats?.totalPosts ?? 0
+    const messages = userStats?.totalMessages ?? 0 // még ki kell találni, hogy csak egy apihívás lesz vagy másképp microserviceből.
 
     const stats = [
         { label: "Connections", value: connections, icon: UserPlus },

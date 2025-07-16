@@ -11,3 +11,11 @@ export type ProfileEditProps = {
     signedUrl: string | null,
     setEditing: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+export type FriendshipStatus = "Accepted" | "Rejected" | "Pending" | "NoFriendship"
+
+export type FriendshipType = {
+    friendshipId?: string
+    status: FriendshipStatus
+    isRecieved: boolean
+}
