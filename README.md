@@ -57,6 +57,9 @@
 - [ ] Friendships
 - [ ] Post, Comment, Like
 - [ ] Market
+---
+
+👉 [View full project backlog on GitHub Projects](https://github.com/users/DanielOzmin/projects/5/views/1)
 
 ---
 
