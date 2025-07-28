@@ -38,21 +38,28 @@ export type UserFriend = {
 export type Post = {
     id: string;
     content: string;
-    imageUrl?: string;
     createdAt: string;
+    userName: string;
     userId: string;
-    user: User;
-    comments: Comment[];
+    profilePictureUrl: string | null;
+    mediaUrls: string[];
+    commentCount: number;
+    likeCount: number;
+}
+
+export type Likes = {
+
 }
 
 export type Comment = {
     id: string;
     content: string;
     createdAt: string;
+    userName: string;
     userId: string;
-    user: User;
-    postId: string;
-    post: Post;
+    postId?: string;
+    parentCommentId?: string;
+    replyCount: number;
 }
 
 

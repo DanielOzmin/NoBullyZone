@@ -1,8 +1,9 @@
 'use client'
 import HandleFriend from "@/app/components/friends/handleFriend"
 import AddFriend from "@/app/components/friends/handleFriend"
+import PostList from "@/app/components/posts/postList"
 import ProfileTabSelector from "@/app/components/profile/profiletabselector"
-import { User } from "@/types/models"
+import { Post, User } from "@/types/models"
 import { FriendshipType, ProfileView } from "@/types/types"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -15,6 +16,8 @@ const FriendPage = ({ params }: FriendPageProps) => {
     const [selectedTab, setSelectedTab] = useState<ProfileView>("Profile")
     const [user, setUser] = useState<User>()
     const [friendship, setFriendship] = useState<FriendshipType>({status: "NoFriendship", isRecieved: false})
+    const [postList, setPostList] = useState<Post[]>([])
+
     const id = params.id
     console.log(id)
 
@@ -49,8 +52,26 @@ const FriendPage = ({ params }: FriendPageProps) => {
         }
     }
 
+    const getFirendPosts = async () => {
+        try {
+            const res = await fetch(`/api/Post/getFriendPosts/${id}`,
+                { credentials: "include" })
+            if (!res.ok) {
+                throw new Error("something go wrong while fetch Posts")
+            }
+            const data = await res.json()
+            console.log(data)
+            setPostList(data)
+        } catch (error) {
+            console.error("Unexpected error: ", error)
+        }
+    }
+
+
+
     useEffect(() => {
         getUserById()
+        getFirendPosts()
         
     }, [])
 
@@ -69,7 +90,7 @@ const FriendPage = ({ params }: FriendPageProps) => {
         <main className="pt-10 p-4 text-black text-3xl">
 
             <ProfileTabSelector selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-            <div className="flex justify-center mt-2"> {/* handle rejected and accepted status */}
+            <div className="flex justify-center mt-2">
                 <HandleFriend id={id} friendship={friendship} setFriendship={setFriendship}/>
             </div>
 
@@ -86,6 +107,9 @@ const FriendPage = ({ params }: FriendPageProps) => {
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800">{user.name}</h2>
                 <p className="mt-2 text-gray-600">{user.selfDescription || "No current self description"}</p>
+            </section>
+            <section>
+                <PostList postList={postList} />
             </section>
 
         </main>

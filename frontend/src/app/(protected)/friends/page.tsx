@@ -80,6 +80,7 @@ const FriendsPage = () => {
         }
     }
 
+
     useEffect(() => {
         getAllFriends()
     }, [])

@@ -2,11 +2,13 @@
 
 
 import Media from "@/app/components/media/media"
+import PostList from "@/app/components/posts/postList"
 import EditProfileForm from "@/app/components/profile/editProfileForm"
 import ProfileDetails from "@/app/components/profile/profileDetails"
 import ProfileStats from "@/app/components/profile/profileStats"
 import ProfileTabSelector from "@/app/components/profile/profiletabselector"
 import { useAuth } from "@/hooks/useAuth"
+import { Post } from "@/types/models"
 import { ProfileView } from "@/types/types"
 import { useEffect, useState } from "react"
 
@@ -16,6 +18,9 @@ const ProfilePage = () => {
     const [editing, setEditing] = useState<boolean>(false)
     const { user } = useAuth()
     const [signedUrl, setSignedUrl] = useState<string | null>(null)
+    const [myPostList, setMyPostList] = useState<Post[]>([])
+
+    if (!user) return
 
     const fetchSignedUrl = async () => {
         if (!user?.profilePictureUrl) return
@@ -28,12 +33,29 @@ const ProfilePage = () => {
         setSignedUrl(data.url)
     }
 
+    const getMyPosts = async () => {
+        try {
+            const res = await fetch(`/api/Post/getMyPosts`,
+                { credentials: "include" })
+            if (!res.ok) {
+                throw new Error("something go wrong while fetch Posts")
+            }
+            const data = await res.json()
+            console.log(data)
+            setMyPostList(data)
+        } catch (error) {
+            console.error("Unexpected error: ", error)
+        }
+    }
+
     useEffect(() => {
         fetchSignedUrl()
     }, [user?.profilePictureUrl])
 
-
-    if (!user) return
+    useEffect(()=>{
+        getMyPosts()
+    },[])
+    
 
     return (
         <main className="pt-10 p-4 text-black text-3xl">
@@ -43,6 +65,7 @@ const ProfilePage = () => {
             {selectedTab == "Profile" && <>
                 {editing ? <EditProfileForm setEditing={setEditing} signedUrl={signedUrl} /> : <ProfileDetails setEditing={setEditing} signedUrl={signedUrl} />}
                 <ProfileStats />
+                <PostList postList={myPostList}/>
             </>}
             {selectedTab == "Gallery" && <Media isVideo={false}/>}
             {selectedTab == "Videos" && <Media isVideo={true}/>}

@@ -11,6 +11,9 @@ const Navbar = () => {
                 </Link>
                 <div>
                     <ul className="hidden sm:flex text-white">
+                        <Link href="/home">
+                            <li className="ml-10 uppercase hover:border-b hover:text-yellow-400 text-xl">Home</li>
+                        </Link>
                         <Link href="/market">
                             <li className="ml-10 uppercase hover:border-b hover:text-yellow-400 text-xl">Market</li>
                         </Link>

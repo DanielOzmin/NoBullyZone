@@ -49,8 +49,7 @@ const FriendCard = ({ friend, isRequestMode = false, onChoose, requestId }: Frie
                     alt={`${friend.name}'s profile picture`}
                     width={64}
                     height={64}
-                    className="object-cover w-full h-full"
-                />
+                    className="object-cover w-full h-full"/>
             </div>
 
             <div>
