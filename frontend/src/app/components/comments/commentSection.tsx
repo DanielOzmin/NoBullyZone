@@ -8,9 +8,10 @@ import { Comment } from "@/types/models"
 type CommentSectionProps = {
     postId?: string
     commentId?: string
+    setRefresh?: React.Dispatch<React.SetStateAction<number>>
 }
 
-const CommentSection = ({postId, commentId}: CommentSectionProps) => {
+const CommentSection = ({postId, commentId, setRefresh}: CommentSectionProps) => {
     const [comments, setComments] = useState<Comment[]>([])
 
     const sendComment = async (content: string) => {
@@ -28,6 +29,8 @@ const CommentSection = ({postId, commentId}: CommentSectionProps) => {
                 }
                 const data = await res.json()
                 console.log(data)
+                getComments()
+                if(setRefresh) setRefresh(prev=> prev + 1)
             } catch (error) {
                 console.error("unexpected error: ", error)
             }         

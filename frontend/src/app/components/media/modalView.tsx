@@ -4,9 +4,9 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import { useEffect } from "react"
 
 type MediaItem = {
-    id: string
+    id?: string
     url: string
-    isVideo: boolean
+    isVideo?: boolean
 }
 
 type ModalViewProps = {

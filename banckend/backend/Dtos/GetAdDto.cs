@@ -1,6 +1,6 @@
 namespace banckend.Dtos;
 
-public class UpdateComment
+public class GetAdDto
 {
     
 }

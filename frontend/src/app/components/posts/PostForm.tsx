@@ -1,13 +1,25 @@
 'use client'
 
-import { ImageIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import { usePostContext } from "@/hooks/usePostHook"
+import { Post } from "@/types/models"
+import { ImageIcon } from "lucide-react"
+import { useRef, useState } from "react"
 
-const CreatePost = () => {
-    const [content, setContent] = useState("")
+type PostFromProps = {
+    postId?: string
+    initialContent?: string
+    initialMediaUrls?: string[]
+    mode: "Create" | "Update"
+    setPost?: React.Dispatch<React.SetStateAction<Post>>
+    setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const PostForm = ({ postId, initialContent, initialMediaUrls, mode, setPost, setIsEditing }: PostFromProps) => {
+    const [content, setContent] = useState(initialContent || "")
     const [files, setFiles] = useState<File[]>([])
-    const [previewUrls, setPreviewUrls] = useState<string[]>([])
+    const [previewUrls, setPreviewUrls] = useState<string[]>(initialMediaUrls || [])
     const fileInputRef = useRef<HTMLInputElement | null>(null)
+    const { getPosts } = usePostContext()
 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +30,7 @@ const CreatePost = () => {
         setFiles(selectedFiles)
 
         const previews = selectedFiles.map((file) => URL.createObjectURL(file))
-        setPreviewUrls(previews)
+        setPreviewUrls((prev) => [...prev, ...previews])
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -30,24 +42,28 @@ const CreatePost = () => {
 
         console.log("Beküldés:", formData)
         try {
-            const res = await fetch("/api/Post/createPost", {
-                method: "POST",
+            const url = mode === "Create" ? `/api/Post/createPost` : `/api/Post/updatePost/${postId}`
+            const method = mode === "Create" ? "POST" : "PUT"
+            const res = await fetch(`${url}`, {
+                method,
                 credentials: "include",
                 body: formData,
             })
 
             if (!res.ok) {
-                const errorText = await res.text()
-                throw new Error(errorText || "Hiba a poszt létrehozásakor")
+                throw new Error("Something go wrong!")
             }
 
-            const newPost = await res.json()
-            console.log("Success:", newPost)
+            const post = await res.json()
+            console.log("Success:", post)
             setContent("")
             setFiles([])
             setPreviewUrls([])
+            if(setPost) setPost(post)
+            if(setIsEditing) setIsEditing(false)
+            await getPosts()
         } catch (error) {
-            console.error("Hiba:", error)
+            console.error("Unexpected error: ", error)
         }
     }
 
@@ -103,10 +119,10 @@ const CreatePost = () => {
             <button
                 type="submit"
                 className="w-full bg-sky-500 text-white py-2 px-4 rounded-lg hover:bg-sky-600 transition">
-                Create Post
+                {mode === "Create" ? "Create Post" : "Update Post"}
             </button>
         </form>
     )
 }
 
-export default CreatePost
+export default PostForm

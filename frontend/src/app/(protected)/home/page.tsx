@@ -1,8 +1,9 @@
 'use client'
 
-import CreatePost from "@/app/components/posts/createPost"
+import PostForm from "@/app/components/posts/PostForm"
 import PostList from "@/app/components/posts/postList"
 import { useAuth } from "@/hooks/useAuth"
+import { usePostContext } from "@/hooks/usePostHook"
 import { Post } from "@/types/models"
 import { useEffect, useState } from "react"
 
@@ -10,35 +11,19 @@ import { useEffect, useState } from "react"
 
 const Home = () => {
     const { user } = useAuth()
-    const [postList, setPostList] = useState<Post[]>([])
+    const {posts, getPosts} = usePostContext()
 
-    const getPosts = async () => {
-        try {
-            const res = await fetch("/api/Post/getPosts",
-                { credentials: "include" })
-            if (!res.ok) {
-                throw new Error("something go wrong while fetch Posts")
-            }
-            const data = await res.json()
-            console.log(data)
-            setPostList(data)
-        } catch (error) {
-            console.error("Unexpected error: ", error)
-        }
-    }
+
+    if(!user) return
 
     useEffect(()=>{
         getPosts()
     },[])
 
-    if(!user) return
-
-    console.log(postList)
-
     return (
         <main className="mx-auto mt-28 text-3xl">
-        <CreatePost/>
-        <PostList postList={postList}/>
+        <PostForm mode="Create"/>
+        <PostList postList={posts}/>
         </main>
     )
 }

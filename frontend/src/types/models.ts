@@ -13,7 +13,7 @@ export type UserStats = {
     totalAds: number;
     totalComments: number;
     totalFriends: number;
-    totalMessages: number;    
+    totalMessages: number;
 }
 
 export type UserImage = {
@@ -76,19 +76,23 @@ export type Friendship = {
 export type PendingFriendshipDto = {
     friendshipId: string;
     status: string;
-    createdAt: string; 
+    createdAt: string;
     otherUser: UserFriend;
 }
 
 export type Ad = {
     id: string;
     title: string;
-    price: string;
+    price: number;
     description?: string;
     createdAt: string;
+    adType: "Service" | "Product" | 1 | 0;
+    location: string;
+    categories: string[];
+    mediaUrls: string[];
     userId: string;
-    user: User;
-    reservations: AdReservation[];
+    user?: User;
+    reservations?: AdReservation[];
 }
 
 export type AdReservation = {
@@ -114,4 +118,10 @@ export type Album = {
     isVideo: boolean,
     createdAt: string
     mediaItems: Media[]
+}
+
+export type MediaItem = {
+    id?: string
+    url: string
+    isVideo?: boolean
 }

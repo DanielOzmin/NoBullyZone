@@ -1,6 +1,5 @@
 'use client'
 import HandleFriend from "@/app/components/friends/handleFriend"
-import AddFriend from "@/app/components/friends/handleFriend"
 import PostList from "@/app/components/posts/postList"
 import ProfileTabSelector from "@/app/components/profile/profiletabselector"
 import { Post, User } from "@/types/models"

@@ -1,6 +1,6 @@
 namespace banckend.Repositories;
 
-public interface IPostRepozitory
+public class AdRepository
 {
     
 }

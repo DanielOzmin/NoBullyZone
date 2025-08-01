@@ -9,7 +9,7 @@ const PostList = ({postList}: PostListProps) => {
     return (
         <div className="max-w-xl mx-auto mt-4">
             {postList.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <PostCard key={post.id} postData={post} />
             ))}
         </div>
     )

@@ -9,7 +9,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="h-screen flex flex-col">
             <Navbar />
             <div className="flex flex-1 overflow-hidden">
-                <div className="w-64 bg-gray-100">
+                <div className="w-64 bg-gray-100 z-10">
                     <LeftSideBar />
                 </div>
 
@@ -17,7 +17,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
                     {children}
                 </main>
 
-                <div className="w-64">
+                <div className="w-64 z-10">
                     <RightSideBar />
                 </div>
             </div>
